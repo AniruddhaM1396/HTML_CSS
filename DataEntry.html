@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lan="en" and dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping</title>
+    <link rel="stylesheet" href="style1.css">
+    
+    <h1>ACME GROCERS</h1>
+    <p>Product Code : <input type="text" placeholder="Product_code" id="key"></p>
+    <p>Quantity : <input type="text" placeholder="quantity" id="quant"></p>
+    <input type="submit" name="" value="ADD" onclick=check()>
+    
+
+    <div class="container">
+        <fieldset>
+            <legend>Bill(Excluding Taxes)</legend>
+            <table border="1" id="tb">
+                <thead>
+                    <tr><th>Code</th><th>Items</th><th>Price</th><th>Quantity</th><th>Amount</th></tr>
+                </thead>
+                <tbody id="billstatement"></tbody>
+            </table>
+        </fieldset>
+        <h1>Total Amount:Rs.<span id="demo"></span></h1>
+        <input type="text" placeholder="Quantity_update" id="up">
+        <input type="submit" name="" value="Update" onclick=edit()>
+    </div>
+
+       
+   
+   <script>
+        var total=0;
+        var quant=0;
+        var cart=[{code:"1",name:"apple",price:10},{code:"2",name:"sugar",price:20},{code:"3",name:"salt",price:25},{code:"4",name:"ginger",price:10},{code:"5",name:"lemon",price:5},
+                    {code:"6",name:"tomato",price:30},{code:"7",name:"wheat",price:50},{code:"8",name:"mint",price:15},{code:"9",name:"milk",price:20},{code:"10",name:"carrot",price:10},
+                    {code:"11",name:"curd",price:15},{code:"12",name:"butter",price:25},{code:"13",name:"tea",price:10},{code:"14",name:"coffee",price:15},{code:"15",name:"chips",price:5},
+                    {code:"16",name:"turmeric",price:8},{code:"17",name:"coconut",price:20},{code:"18",name:"olive",price:40},{code:"19",name:"kiwifruit",price:35},{code:"20",name:"watermelon",price:60},
+                    {code:"21",name:"biscut",price:20},{code:"22",name:"neem",price:30},{code:"23",name:"aloeVera",price:65},{code:"24",name:"dates",price:50},{code:"25",name:"badam",price:70},
+                    {code:"26",name:"greenTea",price:40},{code:"27",name:"pumkin",price:35},{code:"28",name:"orange",price:25},{code:"29",name:"corn",price:20},{code:"30",name:"bread",price:15},
+                    {code:"31",name:"jam",price:20},{code:"32",name:"basmatiRice",price:50},{code:"33",name:"banana",price:10},{code:"34",name:"papaya",price:15},{code:"35",name:"samosa",price:20},
+                    {code:"36",name:"strawberry",price:75},{code:"37",name:"cherry",price:20},{code:"38",name:"avocado",price:25},{code:"39",name:"custard",price:30},{code:"40",name:"guava",price:15},
+                    {code:"41",name:"honey",price:45},{code:"42",name:"lychee",price:20},{code:"43",name:"peaches",price:35},{code:"44",name:"pear",price:25},{code:"45",name:"dragonfruit",price:55},
+                    {code:"46",name:"pomegranate",price:40},{code:"47",name:"rose",price:25},{code:"48",name:"tamarind",price:15},{code:"49",name:"broccoli",price:50},{code:"50",name:"eggplant",price:65}];
+        var flag=0;
+        
+        function check(){
+            for(i=0;i<cart.length;i++){
+                var key=document.getElementById("key").value;
+                var quant=document.getElementById("quant").value;
+                if(cart[i].code==key){
+                    check_present(key);
+                    if(flag==0){
+                    addrow(cart[i].code,cart[i].name,cart[i].price,quant)
+                    return false;
+                    }
+                }
+            }
+            if(flag==0)
+            {
+                alert("invalid Code");
+            }
+        };
+    
+    function check_present(d){
+        
+        var table=document.getElementById("tb");
+        for(var i=1;i<table.rows.length;i++){
+           if(table.rows[i].cells[0].innerHTML==key.value){
+               flag=1;
+               alert("Product Already Present in Table");
+               return
+            }
+            else{
+                flag=0;
+            }
+        }
+     }
+
+    function addrow(code,a,b,c){
+        var table=document.getElementById("tb"), rowcount=table.rows.length;
+        if(rowcount<6){
+        
+            newrow=table.insertRow(table.length),
+            cell0=newrow.insertCell(0),
+            cell1=newrow.insertCell(1),
+            cell2=newrow.insertCell(2),
+            cell3=newrow.insertCell(3),
+            cell4=newrow.insertCell(4),
+            cell5=newrow.insertCell(5);
+            cell6=newrow.insertCell(6);
+
+            cell0.innerHTML=code;
+            cell1.innerHTML=a;
+            cell2.innerHTML=b;
+            cell3.innerHTML=c; 
+            cell4.innerHTML=b*c;
+            cell5.innerHTML="<button type=\"button\" onclick=\"deleteRow()\">Delete</button>";
+            cell6.innerHTML="<button type=\"button\" onclick=\"updateRow()\">Edit</button>";
+            //deleteRow();
+            totalamt();
+        }
+
+        else{
+            alert("number of rows more than 5");
+        }
+            
+    }
+
+    var  table=document.getElementById("tb"), rIndex;
+    function updateRow(){
+    for(var i=1;i<table.rows.length;i++){
+        table.rows[i].onclick=function(){
+            rIndex=this.rowIndex;
+            console.log(rIndex);
+            document.getElementById("up").value=this.cells[3].innerHTML;
+            }
+        }
+    }
+
+    function edit(){
+        table.rows[rIndex].cells[3].innerHTML=document.getElementById("up").value;
+        table.rows[rIndex].cells[4].innerHTML=document.getElementById("up").value*table.rows[rIndex].cells[2].innerHTML;
+        totalamt();
+    }
+
+    var rIndex,table=document.getElementById("tb");
+    function deleteRow(){
+    for(var i=1;i<table.rows.length;i++)
+    {
+        table.rows[i].onclick=function()
+        {
+            rIndex=this.rowIndex;
+            table.deleteRow(rIndex);
+            console.log(rIndex);
+            totalamt();
+        };
+      
+    }
+    }
+    //deleteRow();
+    function totalamt(){
+        var sumVal=0;
+        var table=document.getElementById("tb");
+        for(var i=1;i<table.rows.length;i++)
+            {
+                sumVal=sumVal+parseInt(table.rows[i].cells[4].innerHTML);
+            }
+            console.log(sumVal);
+            document.getElementById("demo").innerHTML=sumVal;
+    }
+    
+
+       function bill(){
+           var newWindow = window.open("","","width=300px,height=300px");
+           newWindow.document.write("<div style=background-color:#DEDEDE></div>");
+           var n=new Date();
+            y=n.getFullYear();
+            m=n.getMonth()+1;
+            d=n.getDate();
+           newWindow.document.write("<div style='text-align:center'>ACME GROCERS</div>");
+           newWindow.document.write("<br>");
+           newWindow.document.write("Place:Bangalore");
+           newWindow.document.write("<br>");
+           newWindow.document.write("<div>Date:"+m+"/"+d+"/"+y+"</div>");
+           newWindow.document.write("<div>Bill No:"+n.getDate()+""+n.getMonth()+""+n.getSeconds()+"</div>");
+           newWindow.document.write("<br>");
+           newWindow.document.write("GST_NO :1396817");
+           newWindow.document.write("<br>");
+           var table=document.getElementById("tb");
+           newWindow.document.write("<table border='1' width='300'><tr><th>Code</th><th>Items</th><th>Price</th><th>Quantity</th><th>Amount</th></tr>");
+        for(var i=1;i<table.rows.length;i++)
+            {
+                var first= table.rows[i].cells[0].innerHTML;
+                var second=table.rows[i].cells[1].innerHTML;
+                var third=table.rows[i].cells[2].innerHTML;
+                var fourth=table.rows[i].cells[3].innerHTML;
+                var fifth=table.rows[i].cells[4].innerHTML;
+               
+                newWindow.document.write("<tr><td>"+first+"</td><td>"+second+"</td><td>"+third+"</td><td>"+fourth+"</td><td>"+fifth+"</td></tr>");
+       }
+
+       var amount= parseInt(document.getElementById("demo").innerHTML);
+       var gst_value=amount*0.05;
+       var gst_amount=amount+amount*0.05;
+       newWindow.document.write("<div>Total Amount : Rs."+amount+"</div>");
+       newWindow.document.write("<div>GST : 5% ....:Rs."+gst_value+"</div>");
+       newWindow.document.write("<div>Total with GST : Rs. "+gst_amount+"</div>");
+       
+       //
+       }
+     
+    </script>
+
+</head>
+<body>
+    <form class="box" name="POST">
+    <input type="submit" name="" value="Bill" onclick=bill()>
+    </form>
+</body>
+</html>

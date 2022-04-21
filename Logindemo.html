@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lan="en" and dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+    <script language='JavaScript'>
+        var objpeople=[{username:"rama",password:"rama123"},{username:"ani",password:"ani123"},{username:"anu",password:"anu123"},{username:"raju",password:"raju123"},{username:"sham",password:"sham123"},{username:"shiv",password:"shiv123"},{username:"kiran",password:"kiran123"},{username:"affu",password:"affu123"},{username:"somu",password:"somu123"},{username:"jack",password:"jack123"}]
+			function validate()
+            {
+                var username=document.getElementById("username").value;
+                var password=document.getElementById("password").value;
+                for(i=0;i<objpeople.length;i++){
+                if(username==objpeople[i].username && password==objpeople[i].password)
+                {
+                    alert("login success");
+                    window.open("DataEntry.html")
+                    return false;
+                }
+                }
+                    alert("login failed")
+            }
+		//-->
+	</script>
+</head>
+<body>
+    <form class="box" method="POST">
+    <h1>login</h1>
+    <input type="text" name="" placeholder="USERNAME" id="username">
+    <input type="password" name="" placeholder="PASSWORD" id="password">
+    <input type="submit" name="" value="Login" onclick=validate()>
+    </form>
+</body>
+</html>
